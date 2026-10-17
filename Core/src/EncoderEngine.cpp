@@ -705,12 +705,19 @@ int EncoderEngine::writeVideoFrame(AVFrame* frame)
 			options.time_base = videoContext.codecContext->time_base;
 			options.sar = videoContext.codecContext->sample_aspect_ratio;
 
-			// Set up filter config
-			videoContext.frameFilter = new FrameFilter();
-			videoContext.frameFilter->configure(videoContext.codecContext, options, filterconfig.substr(1).c_str());
-
 			// Log filters
 			vkLogInfo("Applying video filters: " + filterconfig.substr(1));
+
+			// Set up filter config
+			videoContext.frameFilter = new FrameFilter();
+			int ret = videoContext.frameFilter->configure(videoContext.codecContext, options, filterconfig.substr(1).c_str());
+			if (ret < 0)
+			{
+				vkLogErrorVA("Unable to set up the video filters (Code: %d)", ret);
+				delete videoContext.frameFilter;
+				videoContext.frameFilter = NULL;
+				return ret;
+			}
 		}
 	}
 
@@ -766,12 +773,19 @@ int EncoderEngine::writeAudioFrame(AVFrame* frame)
 			options.sample_fmt = (AVSampleFormat)frame->format;
 			options.time_base = { 1, frame->sample_rate };
 
-			// Set up filter config
-			audioContext.frameFilter = new FrameFilter();
-			audioContext.frameFilter->configure(audioContext.codecContext, options, filterconfig.c_str());
-
 			// Log filters
 			vkLogInfo("Applying audio filters: " + filterconfig);
+
+			// Set up filter config
+			audioContext.frameFilter = new FrameFilter();
+			int ret = audioContext.frameFilter->configure(audioContext.codecContext, options, filterconfig.c_str());
+			if (ret < 0)
+			{
+				vkLogErrorVA("Unable to set up the audio filters (Code: %d)", ret);
+				delete audioContext.frameFilter;
+				audioContext.frameFilter = NULL;
+				return ret;
+			}
 		}
 	}
 
@@ -808,6 +822,7 @@ int EncoderEngine::encodeAndWriteFrame(EncoderContext* context, AVFrame* frame)
 				(ret = sendFrame(context->codecContext, context->stream, tmp_frame)) < 0)
 			{
 				vkLogErrorVA("Encoding frame failed (Code: %d)", ret);
+				av_frame_free(&tmp_frame);
 				return ret;
 			}
 

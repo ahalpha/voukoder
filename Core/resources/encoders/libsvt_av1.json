@@ -17,13 +17,10 @@
       "keyint",
       "irefresh-type",
       "fast-decode",
-      "enable-hdr",
       "asm",
       "lp",
-      "pin",
       "ss",
       "pred-struct",
-      "force-key-frames",
       "aq-mode",
       "use-fixed-qindex-offsets",
       "key-frame-qindex-offset",
@@ -35,7 +32,6 @@
       "buf-initial-sz",
       "buf-optimal-sz",
       "recode-loop",
-      "bias-pct",
       "minsection-pct",
       "maxsection-pct",
       "gop-constraint-rc",
@@ -45,11 +41,9 @@
       "enable-dlf",
       "enable-cdef",
       "enable-restoration",
-      "enable-tpl-la",
       "enable-tf",
       "enable-overlays",
       "scm",
-      "rmv",
       "film-grain-denoise",
       "superres-mode",
       "superres-denom",
@@ -65,7 +59,14 @@
       "transfer-characteristics",
       "matrix-coefficients",
       "color-range",
-      "chroma-sample-position"
+      "chroma-sample-position",
+      "tier",
+      "scd",
+      "lookahead",
+      "tile-rows",
+      "tile-columns",
+      "mastering-display",
+      "content-light"
     ]
   },
   "groups": [
@@ -250,7 +251,7 @@
           "forced": false,
           "control": {
             "type": "integer",
-            "maximum": 63,
+            "maximum": 70,
             "minimum": 1,
             "singleStep": 1,
             "value": 35
@@ -317,10 +318,10 @@
             "selectedIndex": 0,
             "items": [
               {
-                "value": "main"
+                "value": "0"
               },
               {
-                "value": "high"
+                "value": "1"
               }
             ]
           }
@@ -499,7 +500,7 @@
         },
         {
           "id": "sc_detection",
-          "parameter": "sc_detection",
+          "parameter": "scd",
           "control": {
             "type": "boolean",
             "value": false
@@ -544,14 +545,6 @@
           }
         },
         {
-          "id": "enable-hdr",
-          "parameter": "enable-hdr",
-          "control": {
-            "type": "boolean",
-            "value": false
-          }
-        },
-        {
           "id": "asm",
           "parameter": "asm",
           "control": {
@@ -571,14 +564,6 @@
           }
         },
         {
-          "id": "pin",
-          "parameter": "pin",
-          "control": {
-            "type": "boolean",
-            "value": false
-          }
-        },
-        {
           "id": "ss",
           "parameter": "ss",
           "control": {
@@ -591,7 +576,7 @@
         },
         {
           "id": "la_depth",
-          "parameter": "la_depth",
+          "parameter": "lookahead",
           "control": {
             "type": "integer",
             "minimum": -1,
@@ -614,14 +599,6 @@
                 "value": "2"
               }
             ]
-          }
-        },
-        {
-          "id": "force-key-frames",
-          "parameter": "force-key-frames",
-          "control": {
-            "type": "string",
-            "value": "none"
           }
         },
         {
@@ -768,17 +745,6 @@
           }
         },
         {
-          "id": "bias-pct",
-          "parameter": "bias-pct",
-          "control": {
-            "type": "integer",
-            "minimum": 0,
-            "maximum": 100,
-            "value": 100,
-            "singleStep": 1
-          }
-        },
-        {
           "id": "minsection-pct",
           "parameter": "minsection-pct",
           "control": {
@@ -846,7 +812,7 @@
       "properties": [
         {
           "id": "tile-rows",
-          "parameter": "tile_rows",
+          "parameter": "tile-rows",
           "control": {
             "type": "integer",
             "minimum": 0,
@@ -857,7 +823,7 @@
         },
         {
           "id": "tile-columns",
-          "parameter": "tile_columns",
+          "parameter": "tile-columns",
           "control": {
             "type": "integer",
             "minimum": 0,
@@ -885,14 +851,6 @@
         {
           "id": "enable-restoration",
           "parameter": "enable-restoration",
-          "control": {
-            "type": "boolean",
-            "value": true
-          }
-        },
-        {
-          "id": "enable-tpl-la",
-          "parameter": "enable-tpl-la",
           "control": {
             "type": "boolean",
             "value": true
@@ -931,14 +889,6 @@
                 "value": "2"
               }
             ]
-          }
-        },
-        {
-          "id": "rmv",
-          "parameter": "rmv",
-          "control": {
-            "type": "boolean",
-            "value": false
           }
         },
         {
