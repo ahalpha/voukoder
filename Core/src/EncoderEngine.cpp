@@ -231,12 +231,34 @@ int EncoderEngine::openCodec(const wxString codecId, const wxString codecOptions
 
 		// Open the codec
 		if ((ret = avcodec_open2(encoderContext->codecContext, encoderContext->codecContext->codec, &dictionary)) == 0)
+		{
 			ret = avcodec_parameters_from_context(encoderContext->stream->codecpar, encoderContext->codecContext);
+
+			if (ret == 0 && encoderContext->codecContext->codec_type == AVMEDIA_TYPE_VIDEO)
+			{
+				injectSphericalData(encoderContext->stream);
+				injectStereoData(encoderContext->stream);
+				injectMasteringDisplayData(encoderContext->stream);
+				injectContentLightLevels(encoderContext->stream);
+			}
+		}
 		else
 			vkLogErrorVA("Failed opening codec: %s", codecId.c_str());
 	}
 
 	return ret;
+}
+
+static int AddStreamSideData(AVStream* stream, AVPacketSideDataType type, uint8_t* data, size_t size)
+{
+	// Ownership of data is transferred on success only
+	if (av_packet_side_data_add(&stream->codecpar->coded_side_data, &stream->codecpar->nb_coded_side_data, type, data, size, 0) == NULL)
+	{
+		av_free(data);
+		return AVERROR(ENOMEM);
+	}
+
+	return 0;
 }
 
 int EncoderEngine::injectStereoData(AVStream* stream)
@@ -277,7 +299,7 @@ int EncoderEngine::injectStereoData(AVStream* stream)
 	else if (view == "right")
 		stereo_3d->view = AV_STEREO3D_VIEW_RIGHT;
 
-	return av_stream_add_side_data(stream, AV_PKT_DATA_STEREO3D, (uint8_t*)stereo_3d, sizeof(*stereo_3d));
+	return AddStreamSideData(stream, AV_PKT_DATA_STEREO3D, (uint8_t*)stereo_3d, sizeof(*stereo_3d));
 }
 
 int EncoderEngine::injectSphericalData(AVStream* stream)
@@ -314,7 +336,7 @@ int EncoderEngine::injectSphericalData(AVStream* stream)
 		spherical->bound_bottom = wxAtoi(GetSideData(exportInfo.video.sideData, "sph_bound-bottom", "0"));
 	}
 
-	return av_stream_add_side_data(stream, AV_PKT_DATA_SPHERICAL, (uint8_t*)spherical, size);
+	return AddStreamSideData(stream, AV_PKT_DATA_SPHERICAL, (uint8_t*)spherical, size);
 }
 
 int EncoderEngine::injectMasteringDisplayData(AVStream* stream)
@@ -380,7 +402,7 @@ int EncoderEngine::injectMasteringDisplayData(AVStream* stream)
 		mdcv->max_luminance = { wxAtoi(GetSideData(exportInfo.video.sideData, "mdcv_max_luminance", "0")), 1 };
 	}
 
-	return av_stream_add_side_data(stream, AV_PKT_DATA_MASTERING_DISPLAY_METADATA, (uint8_t*)mdcv, sizeof(*mdcv));
+	return AddStreamSideData(stream, AV_PKT_DATA_MASTERING_DISPLAY_METADATA, (uint8_t*)mdcv, sizeof(*mdcv));
 
 }
 
@@ -398,7 +420,7 @@ int EncoderEngine::injectContentLightLevels(AVStream* stream)
 	cll->MaxCLL = wxAtoi(GetSideData(exportInfo.video.sideData, "cll_maxCLL", "0"));
 	cll->MaxFALL = wxAtoi(GetSideData(exportInfo.video.sideData, "cll_maxFALL", "0"));
 
-	return av_stream_add_side_data(stream, AV_PKT_DATA_CONTENT_LIGHT_LEVEL, (uint8_t*)cll, size);
+	return AddStreamSideData(stream, AV_PKT_DATA_CONTENT_LIGHT_LEVEL, (uint8_t*)cll, size);
 }
 
 int EncoderEngine::createCodecContext(const wxString codecId, EncoderContext* encoderContext, int flags)
@@ -471,14 +493,9 @@ int EncoderEngine::createCodecContext(const wxString codecId, EncoderContext* en
 	encoderContext->stream->time_base = encoderContext->codecContext->time_base;
 	encoderContext->stream->avg_frame_rate = av_inv_q(encoderContext->stream->time_base);
 
-	// Inject side data
+	// Stream metadata
 	if (codec->type == AVMEDIA_TYPE_VIDEO)
 	{
-		injectSphericalData(encoderContext->stream);
-		injectStereoData(encoderContext->stream);
-		injectMasteringDisplayData(encoderContext->stream);
-		injectContentLightLevels(encoderContext->stream);
-
 		// Custom timecode
 		if (exportInfo.video.options.find("_timecode") != exportInfo.video.options.end())
 		{
@@ -677,7 +694,10 @@ int EncoderEngine::writeVideoFrame(AVFrame* frame)
 	}
 
 	// Common frame settings
-	frame->top_field_first = videoContext.codecContext->field_order == AVFieldOrder::AV_FIELD_TT;
+	if (videoContext.codecContext->field_order == AVFieldOrder::AV_FIELD_TT)
+		frame->flags |= AV_FRAME_FLAG_TOP_FIELD_FIRST;
+	else
+		frame->flags &= ~AV_FRAME_FLAG_TOP_FIELD_FIRST;
 	frame->sample_aspect_ratio = videoContext.codecContext->sample_aspect_ratio;
 
 	frame->pts = videoContext.next_pts;

@@ -4,7 +4,7 @@
 
 
  /* File created by MIDL compiler version 8.01.0628 */
-/* at Tue Jan 19 04:14:07 2038
+/* at Tue Jan 19 11:14:07 2038
  */
 /* Compiler settings for VoukoderTypeLib.idl:
     Oicf, W1, Zp8, env=Win64 (32b run), target_arch=AMD64 8.01.0628 
@@ -845,7 +845,7 @@ static const unsigned short IVoukoder_FormatStringOffsetTable[] =
 
 
  /* File created by MIDL compiler version 8.01.0628 */
-/* at Tue Jan 19 04:14:07 2038
+/* at Tue Jan 19 11:14:07 2038
  */
 /* Compiler settings for VoukoderTypeLib.idl:
     Oicf, W1, Zp8, env=Win64 (32b run), target_arch=AMD64 8.01.0628 
@@ -897,11 +897,6 @@ extern const __midl_frag57_t __midl_frag57;
 
 typedef 
 NDR64_FORMAT_CHAR
-__midl_frag56_t;
-extern const __midl_frag56_t __midl_frag56;
-
-typedef 
-NDR64_FORMAT_CHAR
 __midl_frag54_t;
 extern const __midl_frag54_t __midl_frag54;
 
@@ -944,21 +939,6 @@ __midl_frag50_t;
 extern const __midl_frag50_t __midl_frag50;
 
 typedef 
-NDR64_FORMAT_CHAR
-__midl_frag49_t;
-extern const __midl_frag49_t __midl_frag49;
-
-typedef 
-NDR64_FORMAT_CHAR
-__midl_frag48_t;
-extern const __midl_frag48_t __midl_frag48;
-
-typedef 
-struct _NDR64_POINTER_FORMAT
-__midl_frag47_t;
-extern const __midl_frag47_t __midl_frag47;
-
-typedef 
 struct 
 {
     struct _NDR64_STRUCTURE_HEADER_FORMAT frag1;
@@ -987,11 +967,6 @@ struct
 }
 __midl_frag44_t;
 extern const __midl_frag44_t __midl_frag44;
-
-typedef 
-NDR64_FORMAT_CHAR
-__midl_frag43_t;
-extern const __midl_frag43_t __midl_frag43;
 
 typedef 
 struct 
@@ -1087,21 +1062,6 @@ __midl_frag30_t;
 extern const __midl_frag30_t __midl_frag30;
 
 typedef 
-struct _NDR64_POINTER_FORMAT
-__midl_frag27_t;
-extern const __midl_frag27_t __midl_frag27;
-
-typedef 
-struct 
-{
-    struct _NDR64_PROC_FORMAT frag1;
-    struct _NDR64_PARAM_FORMAT frag2;
-    struct _NDR64_PARAM_FORMAT frag3;
-}
-__midl_frag26_t;
-extern const __midl_frag26_t __midl_frag26;
-
-typedef 
 NDR64_FORMAT_CHAR
 __midl_frag16_t;
 extern const __midl_frag16_t __midl_frag16;
@@ -1164,11 +1124,6 @@ struct
 }
 __midl_frag7_t;
 extern const __midl_frag7_t __midl_frag7;
-
-typedef 
-struct _NDR64_POINTER_FORMAT
-__midl_frag6_t;
-extern const __midl_frag6_t __midl_frag6;
 
 typedef 
 struct 
@@ -1271,9 +1226,6 @@ static const __midl_frag57_t __midl_frag57 =
     }
 };
 
-static const __midl_frag56_t __midl_frag56 =
-0x5    /* FC64_INT32 */;
-
 static const __midl_frag54_t __midl_frag54 =
 0x2    /* FC64_INT8 */;
 
@@ -1345,7 +1297,7 @@ static const __midl_frag52_t __midl_frag52 =
             0x21,    /* FC64_UP */
             (NDR64_UINT8) 8 /* 0x8 */,
             (NDR64_UINT16) 0 /* 0x0 */,
-            &__midl_frag56
+            &__midl_frag59
         },
         0x93    /* FC64_END */
     }
@@ -1400,7 +1352,7 @@ static const __midl_frag50_t __midl_frag50 =
     },
     { 
     /* HRESULT */      /* parameter HRESULT */
-        &__midl_frag56,
+        &__midl_frag59,
         { 
         /* HRESULT */
             0,
@@ -1422,21 +1374,6 @@ static const __midl_frag50_t __midl_frag50 =
         (NDR64_UINT16) 0 /* 0x0 */,
         16 /* 0x10 */,   /* Stack offset */
     }
-};
-
-static const __midl_frag49_t __midl_frag49 =
-0x5    /* FC64_INT32 */;
-
-static const __midl_frag48_t __midl_frag48 =
-0x2    /* FC64_INT8 */;
-
-static const __midl_frag47_t __midl_frag47 =
-{ 
-/* *BYTE */
-    0x21,    /* FC64_UP */
-    (NDR64_UINT8) 8 /* 0x8 */,
-    (NDR64_UINT16) 0 /* 0x0 */,
-    &__midl_frag48
 };
 
 static const __midl_frag46_t __midl_frag46 =
@@ -1479,7 +1416,7 @@ static const __midl_frag46_t __midl_frag46 =
             0x21,    /* FC64_UP */
             (NDR64_UINT8) 16 /* 0x10 */,
             (NDR64_UINT16) 0 /* 0x0 */,
-            &__midl_frag47
+            &__midl_frag53
         },
         0x93    /* FC64_END */
     }
@@ -1534,7 +1471,7 @@ static const __midl_frag44_t __midl_frag44 =
     },
     { 
     /* HRESULT */      /* parameter HRESULT */
-        &__midl_frag49,
+        &__midl_frag59,
         { 
         /* HRESULT */
             0,
@@ -1557,9 +1494,6 @@ static const __midl_frag44_t __midl_frag44 =
         16 /* 0x10 */,   /* Stack offset */
     }
 };
-
-static const __midl_frag43_t __midl_frag43 =
-0x5    /* FC64_INT32 */;
 
 static const __midl_frag42_t __midl_frag42 =
 { 
@@ -1797,7 +1731,7 @@ static const __midl_frag38_t __midl_frag38 =
     },
     { 
     /* HRESULT */      /* parameter HRESULT */
-        &__midl_frag43,
+        &__midl_frag59,
         { 
         /* HRESULT */
             0,
@@ -1883,7 +1817,7 @@ static const __midl_frag34_t __midl_frag34 =
     },
     { 
     /* HRESULT */      /* parameter HRESULT */
-        &__midl_frag43,
+        &__midl_frag59,
         { 
         /* HRESULT */
             0,
@@ -1913,7 +1847,7 @@ static const __midl_frag31_t __midl_frag31 =
     0x20,    /* FC64_RP */
     (NDR64_UINT8) 12 /* 0xc */,
     (NDR64_UINT16) 0 /* 0x0 */,
-    &__midl_frag43
+    &__midl_frag59
 };
 
 static const __midl_frag30_t __midl_frag30 =
@@ -1932,7 +1866,7 @@ static const __midl_frag30_t __midl_frag30 =
     },
     { 
     /* isActive */      /* parameter isActive */
-        &__midl_frag43,
+        &__midl_frag59,
         { 
         /* isActive */
             0,
@@ -1956,80 +1890,7 @@ static const __midl_frag30_t __midl_frag30 =
     },
     { 
     /* HRESULT */      /* parameter HRESULT */
-        &__midl_frag43,
-        { 
-        /* HRESULT */
-            0,
-            0,
-            0,
-            0,
-            1,
-            1,
-            1,
-            1,
-            0,
-            0,
-            0,
-            0,
-            0,
-            (NDR64_UINT16) 0 /* 0x0 */,
-            0
-        },    /* [out], IsReturn, Basetype, ByValue */
-        (NDR64_UINT16) 0 /* 0x0 */,
-        16 /* 0x10 */,   /* Stack offset */
-    }
-};
-
-static const __midl_frag27_t __midl_frag27 =
-{ 
-/* *BOOL */
-    0x20,    /* FC64_RP */
-    (NDR64_UINT8) 12 /* 0xc */,
-    (NDR64_UINT16) 0 /* 0x0 */,
-    &__midl_frag49
-};
-
-static const __midl_frag26_t __midl_frag26 =
-{ 
-/* IsAudioWaiting */
-    { 
-    /* IsAudioWaiting */      /* procedure IsAudioWaiting */
-        (NDR64_UINT32) 524611 /* 0x80143 */,    /* auto handle */ /* IsIntrepreted, [object], HasReturn */
-        (NDR64_UINT32) 24 /* 0x18 */ ,  /* Stack size */
-        (NDR64_UINT32) 0 /* 0x0 */,
-        (NDR64_UINT32) 40 /* 0x28 */,
-        (NDR64_UINT16) 0 /* 0x0 */,
-        (NDR64_UINT16) 0 /* 0x0 */,
-        (NDR64_UINT16) 2 /* 0x2 */,
-        (NDR64_UINT16) 0 /* 0x0 */
-    },
-    { 
-    /* isWaiting */      /* parameter isWaiting */
-        &__midl_frag49,
-        { 
-        /* isWaiting */
-            0,
-            0,
-            0,
-            0,
-            1,
-            0,
-            1,
-            0,
-            1,
-            0,
-            0,
-            0,
-            0,
-            (NDR64_UINT16) 0 /* 0x0 */,
-            1
-        },    /* [out], Basetype, SimpleRef, UseCache */
-        (NDR64_UINT16) 0 /* 0x0 */,
-        8 /* 0x8 */,   /* Stack offset */
-    },
-    { 
-    /* HRESULT */      /* parameter HRESULT */
-        &__midl_frag49,
+        &__midl_frag59,
         { 
         /* HRESULT */
             0,
@@ -2193,7 +2054,7 @@ static const __midl_frag9_t __midl_frag9 =
     },
     { 
     /* HRESULT */      /* parameter HRESULT */
-        &__midl_frag43,
+        &__midl_frag59,
         { 
         /* HRESULT */
             0,
@@ -2240,15 +2101,6 @@ static const __midl_frag7_t __midl_frag7 =
     }
 };
 
-static const __midl_frag6_t __midl_frag6 =
-{ 
-/* *VKENCODERCONFIG */
-    0x20,    /* FC64_RP */
-    (NDR64_UINT8) 0 /* 0x0 */,
-    (NDR64_UINT16) 0 /* 0x0 */,
-    &__midl_frag7
-};
-
 static const __midl_frag5_t __midl_frag5 =
 { 
 /* GetConfig */
@@ -2289,7 +2141,7 @@ static const __midl_frag5_t __midl_frag5 =
     },
     { 
     /* HRESULT */      /* parameter HRESULT */
-        &__midl_frag43,
+        &__midl_frag59,
         { 
         /* HRESULT */
             0,
@@ -2329,7 +2181,7 @@ static const __midl_frag2_t __midl_frag2 =
     },
     { 
     /* finalize */      /* parameter finalize */
-        &__midl_frag43,
+        &__midl_frag59,
         { 
         /* finalize */
             0,
@@ -2353,7 +2205,7 @@ static const __midl_frag2_t __midl_frag2 =
     },
     { 
     /* HRESULT */      /* parameter HRESULT */
-        &__midl_frag43,
+        &__midl_frag59,
         { 
         /* HRESULT */
             0,
@@ -2422,9 +2274,9 @@ static const FormatInfoRef IVoukoder_Ndr64ProcTable[] =
     &__midl_frag2,
     &__midl_frag5,
     &__midl_frag9,
-    &__midl_frag26,
     &__midl_frag30,
-    &__midl_frag26,
+    &__midl_frag30,
+    &__midl_frag30,
     &__midl_frag30,
     &__midl_frag34,
     &__midl_frag38,

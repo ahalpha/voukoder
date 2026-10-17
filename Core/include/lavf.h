@@ -55,9 +55,14 @@ extern "C" {
 #pragma comment(lib, "libavfilter.lib")
 #pragma comment(lib, "libavutil.lib")
 #pragma comment(lib, "libswscale.lib")
-#pragma comment(lib, "libpostproc.lib")
 #pragma comment(lib, "libswresample.lib")
 #pragma comment(lib, "Bcrypt.lib")
+#pragma comment(lib, "Ncrypt.lib")
+#pragma comment(lib, "Crypt32.lib")
+
+#if __has_include("libpostproc/postprocess.h")
+#  pragma comment(lib, "libpostproc.lib")
+#endif
 
 #if __has_include("zimg.h")
 #  pragma comment(lib, "zimg.lib")

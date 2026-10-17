@@ -128,7 +128,7 @@ AVMediaType EncoderUtils::GetMediaType(const wxString codecId)
 	const AVFilter* filter = avfilter_get_by_name(codecId.After('.'));
 	if (filter != NULL)
 	{
-		if (filter->nb_outputs > 0)
+		if (avfilter_filter_pad_count(filter, 1) > 0)
 			return avfilter_pad_get_type(filter->outputs, 0);
 	}
 
@@ -177,16 +177,26 @@ bool EncoderUtils::IsEncoderAvailable(const wxString name)
 				codecContext->framerate = av_inv_q(codecContext->time_base);
 				codecContext->sample_aspect_ratio = { 1, 1 };
 				codecContext->field_order = AV_FIELD_PROGRESSIVE;
-				codecContext->pix_fmt = codec->pix_fmts ? codec->pix_fmts[0] : AV_PIX_FMT_YUV420P;
+
+				const AVPixelFormat* pix_fmts = NULL;
+				avcodec_get_supported_config(codecContext, codec, AV_CODEC_CONFIG_PIX_FORMAT, 0, (const void**)&pix_fmts, NULL);
+				codecContext->pix_fmt = pix_fmts ? pix_fmts[0] : AV_PIX_FMT_YUV420P;
 			}
 			else if (codec->type == AVMEDIA_TYPE_AUDIO)
 			{
-				if (codec->ch_layouts)
-					codecContext->ch_layout = codec->ch_layouts[0];
+				const AVChannelLayout* ch_layouts = NULL;
+				const int* samplerates = NULL;
+				const AVSampleFormat* sample_fmts = NULL;
+				avcodec_get_supported_config(codecContext, codec, AV_CODEC_CONFIG_CHANNEL_LAYOUT, 0, (const void**)&ch_layouts, NULL);
+				avcodec_get_supported_config(codecContext, codec, AV_CODEC_CONFIG_SAMPLE_RATE, 0, (const void**)&samplerates, NULL);
+				avcodec_get_supported_config(codecContext, codec, AV_CODEC_CONFIG_SAMPLE_FORMAT, 0, (const void**)&sample_fmts, NULL);
+
+				if (ch_layouts)
+					codecContext->ch_layout = ch_layouts[0];
 				else
 					av_channel_layout_from_mask(&codecContext->ch_layout, AV_CH_LAYOUT_STEREO);
-				codecContext->sample_rate = codec->supported_samplerates ? codec->supported_samplerates[0] : 48000;
-				codecContext->sample_fmt = codec->sample_fmts ? codec->sample_fmts[0] : AV_SAMPLE_FMT_FLTP;
+				codecContext->sample_rate = samplerates ? samplerates[0] : 48000;
+				codecContext->sample_fmt = sample_fmts ? sample_fmts[0] : AV_SAMPLE_FMT_FLTP;
 			}
 			else
 			{
