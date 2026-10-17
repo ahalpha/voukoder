@@ -31,6 +31,9 @@ struct FrameFilterOptions
 	AVChannelLayout ch_layout;
 	AVSampleFormat sample_fmt = AV_SAMPLE_FMT_NONE;
 	AVPixelFormat pix_fmt = AV_PIX_FMT_NONE;
+	AVColorSpace color_space = AVCOL_SPC_UNSPECIFIED;
+	AVColorRange color_range = AVCOL_RANGE_UNSPECIFIED;
+	AVAlphaMode alpha_mode = AVALPHA_MODE_UNSPECIFIED;
 	AVRational sar = { 1, 1 };
 };
 

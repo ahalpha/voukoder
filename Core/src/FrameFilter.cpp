@@ -76,6 +76,15 @@ int FrameFilter::configure(AVCodecContext* context, FrameFilterOptions options, 
 		av_opt_set(in_ctx, "pix_fmt", av_get_pix_fmt_name(options.pix_fmt), AV_OPT_SEARCH_CHILDREN);
 		av_opt_set_q(in_ctx, "time_base", options.time_base, AV_OPT_SEARCH_CHILDREN);
 		av_opt_set_q(in_ctx, "sar", options.sar, AV_OPT_SEARCH_CHILDREN);
+
+		if (AVBufferSrcParameters* params = av_buffersrc_parameters_alloc())
+		{
+			params->color_space = options.color_space;
+			params->color_range = options.color_range;
+			params->alpha_mode = options.alpha_mode;
+			av_buffersrc_parameters_set(in_ctx, params);
+			av_free(params);
+		}
 		break;
 	default:
 		break;

@@ -681,6 +681,9 @@ int EncoderEngine::writeVideoFrame(AVFrame* frame)
 			options.width = frame->width;
 			options.height = frame->height;
 			options.pix_fmt = (AVPixelFormat)frame->format;
+			options.color_space = frame->colorspace;
+			options.color_range = frame->color_range;
+			options.alpha_mode = frame->alpha_mode;
 			options.time_base = videoContext.codecContext->time_base;
 			options.sar = videoContext.codecContext->sample_aspect_ratio;
 
@@ -771,7 +774,10 @@ int EncoderEngine::encodeAndWriteFrame(EncoderContext* context, AVFrame* frame)
 	{
 		// Send the uncompressed frame to frame filter
 		if ((ret = context->frameFilter->sendFrame(frame)) < 0)
+		{
+			vkLogErrorVA("Sending frame to the filter failed (Code: %d)", ret);
 			return ret;
+		}
 
 		AVFrame* tmp_frame;
 		tmp_frame = av_frame_alloc();
@@ -783,7 +789,7 @@ int EncoderEngine::encodeAndWriteFrame(EncoderContext* context, AVFrame* frame)
 			if (tmp_frame->nb_samples == context->codecContext->frame_size &&
 				(ret = sendFrame(context->codecContext, context->stream, tmp_frame)) < 0)
 			{
-				//auto a = av_err2str(ret);
+				vkLogErrorVA("Encoding frame failed (Code: %d)", ret);
 				return ret;
 			}
 
@@ -797,6 +803,7 @@ int EncoderEngine::encodeAndWriteFrame(EncoderContext* context, AVFrame* frame)
 		// Send an unfiltered frame 
 		if ((ret = sendFrame(context->codecContext, context->stream, frame)) < 0)
 		{
+			vkLogErrorVA("Encoding frame failed (Code: %d)", ret);
 			return ret;
 		}
 	}

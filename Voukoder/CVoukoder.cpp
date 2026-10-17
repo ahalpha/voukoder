@@ -658,12 +658,31 @@ STDMETHODIMP CVoukoder::SendVideoFrame(VKVIDEOFRAME frame)
 	f->color_primaries = (AVColorPrimaries)av_color_primaries_from_name(frame.colorPrimaries);
 	f->color_trc = (AVColorTransferCharacteristic)av_color_transfer_from_name(frame.colorTrc);
 
-	// Fill each plane
-	for (int i = 0; i < frame.planes; i++)
+	if (f->format == AV_PIX_FMT_NONE)
 	{
-		f->data[i] = frame.buffer[i];
-		f->linesize[i] = frame.rowsize[i];
+		vkLogErrorVA("Unknown pixel format: %s", frame.format);
+		av_frame_free(&f);
+		return E_FAIL;
 	}
+
+	// Use our own (ref counted) buffer, the host owns the source data
+	int ret = av_frame_get_buffer(f, 0);
+	if (ret < 0)
+	{
+		vkLogErrorVA("Unable to allocate a %dx%d %s frame (Code: %d)", frame.width, frame.height, frame.format, ret);
+		av_frame_free(&f);
+		return E_FAIL;
+	}
+
+	uint8_t* data[4] = {};
+	int linesize[4] = {};
+	for (int i = 0; i < frame.planes && i < 4; i++)
+	{
+		data[i] = frame.buffer[i];
+		linesize[i] = frame.rowsize[i];
+	}
+
+	av_image_copy2(f->data, f->linesize, data, linesize, (AVPixelFormat)f->format, f->width, f->height);
 
 	HRESULT hr = encoder->writeVideoFrame(f) == 0 ? S_OK : E_FAIL;
 
