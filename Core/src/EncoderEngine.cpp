@@ -668,9 +668,19 @@ int EncoderEngine::writeVideoFrame(AVFrame* frame)
 		// Add users filter config
 		wxString filterconfig = exportInfo.video.filters.AsFilterString();
 
-		// Convert pixel format
-		if (frame->format != (int)videoContext.codecContext->pix_fmt)
+		// Convert pixel format and color range
+		const AVColorRange colorRange = videoContext.codecContext->color_range;
+		const bool convertRange = colorRange != AVCOL_RANGE_UNSPECIFIED &&
+			frame->color_range != AVCOL_RANGE_UNSPECIFIED &&
+			frame->color_range != colorRange;
+
+		if (frame->format != (int)videoContext.codecContext->pix_fmt || convertRange)
+		{
 			filterconfig << ",format=pix_fmts=" << av_get_pix_fmt_name(videoContext.codecContext->pix_fmt);
+
+			if (convertRange)
+				filterconfig << ":color_ranges=" << av_color_range_name(colorRange);
+		}
 
 		// Create filter
 		if (filterconfig.size() > 0)
